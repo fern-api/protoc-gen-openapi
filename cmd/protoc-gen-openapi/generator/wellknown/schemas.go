@@ -123,6 +123,7 @@ func NewNumberSchema(format string) *v3.SchemaOrReference {
 	}
 }
 
+// TODO: Add the x-fern-type-name setting for each enum based on the descriptor.
 func NewEnumSchema(enum_type *string, field protoreflect.FieldDescriptor) *v3.SchemaOrReference {
 	schema := &v3.Schema{Format: "enum"}
 	if enum_type != nil && *enum_type == "string" {
