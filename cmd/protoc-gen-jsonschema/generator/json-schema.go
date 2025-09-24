@@ -379,8 +379,7 @@ func (g *JSONSchemaGenerator) addOneofFieldsToSchema(oneofs []*protogen.Oneof, s
 
 	for _, oneOfProto := range oneofs {
 		oneOfSchema := jsonschema.Schema{
-			OneOf:   &[]*jsonschema.Schema{},
-			Default: &jsonschema.DefaultValue{NullTag: true},
+			OneOf: &[]*jsonschema.Schema{},
 		}
 
 		*oneOfSchema.OneOf = append(*oneOfSchema.OneOf, &jsonschema.Schema{Type: &jsonschema.StringOrStringArray{String: &typeNull}})
