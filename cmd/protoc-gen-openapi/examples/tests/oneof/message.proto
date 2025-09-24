@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package examples.oneof;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/google/gnostic/examples/oneof";
+
+// Message demonstrating oneof field usage
+message OneOfMessage {
+  // Identifier for the message
+  string id = 1;
+
+  // Example of oneof field - only one of these can be set
+  oneof payment_method {
+    string credit_card = 2;
+    string bank_transfer = 3;
+    string digital_wallet = 4;
+  }
+
+  // Another oneof example with different types
+  oneof contact_info {
+    string email = 5;
+    string phone = 6;
+    string address = 7;
+  }
+}
+
+// Service definition
+service OneOfService {
+  rpc CreatePayment(OneOfMessage) returns (OneOfMessage) {
+    option (google.api.http) = {
+      post: "/v1/payments"
+      body: "*"
+    };
+  }
+}
