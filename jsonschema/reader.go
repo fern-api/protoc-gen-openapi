@@ -239,8 +239,6 @@ func (schema *Schema) boolValue(v *yaml.Node) *bool {
 		case "!!bool":
 			v2, _ := strconv.ParseBool(v.Value)
 			return &v2
-		case "!!null":
-			return &DefaultValue{NullTag: true}
 		default:
 			fmt.Printf("boolValue: unexpected node %+v\n", v)
 		}
