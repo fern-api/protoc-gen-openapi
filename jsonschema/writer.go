@@ -34,7 +34,7 @@ func renderMappingNode(node *yaml.Node, indent string) (result string) {
 		value := node.Content[i+1]
 		switch value.Kind {
 		case yaml.ScalarNode:
-			if value.Tag == "!!bool" {
+			if value.Tag == "!!bool" || value.Tag == "!!int" || value.Tag == "!!float" || value.Tag == "!!null" {
 				result += value.Value
 			} else {
 				result += "\"" + value.Value + "\""
@@ -221,6 +221,14 @@ func nodeForSequence(content []*yaml.Node) *yaml.Node {
 	return &yaml.Node{
 		Kind:    yaml.SequenceNode,
 		Content: content,
+	}
+}
+
+func nodeForNull() *yaml.Node {
+	return &yaml.Node{
+		Kind:  yaml.ScalarNode,
+		Tag:   "!!null",
+		Value: "null",
 	}
 }
 

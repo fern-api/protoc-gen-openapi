@@ -228,3 +228,12 @@ func (s *Schema) DefinitionWithName(name string) *Schema {
 func (s *Schema) AddProperty(name string, property *Schema) {
 	*s.Properties = append(*s.Properties, NewNamedSchema(name, property))
 }
+
+type DefaultValue struct {
+	StringValue  *string
+	BooleanValue *bool
+	Int64Value   *int64
+	Float64Value *float64
+	ArrayValue   []*yaml.Node
+	NullTag      bool
+}
