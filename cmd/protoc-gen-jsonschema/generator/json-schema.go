@@ -362,7 +362,6 @@ func (g *JSONSchemaGenerator) buildKindProperty(propertyValue string) *jsonschem
 			Title:       &kind,
 			Type:        &jsonschema.StringOrStringArray{String: &typeString},
 			Enumeration: &[]jsonschema.SchemaEnumValue{},
-			Default:     &jsonschema.DefaultValue{StringValue: &propertyValue},
 		},
 	}
 	*kindProperty.Value.Enumeration = append(
