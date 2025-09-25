@@ -17,10 +17,17 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: userId
                   in: query
                   schema:
-                    type: string
+                    type: integer
+                    format: uint64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
             responses:
                 "200":
                     description: OK
@@ -44,6 +51,9 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -73,12 +83,19 @@ paths:
                   in: path
                   required: true
                   schema:
-                    type: string
+                    type: integer
+                    format: uint64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: messageId
                   in: path
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             responses:
                 "200":
                     description: OK
@@ -102,17 +119,35 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             type: object
             properties:
                 messageId:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 userId:
-                    type: string
+                    type: integer
+                    format: uint64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 content:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 maybe:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message
+            source: tests/pathparams/message.proto
         Status:
             type: object
             properties:

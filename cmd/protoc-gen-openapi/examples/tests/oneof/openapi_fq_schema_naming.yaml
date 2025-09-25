@@ -33,96 +33,63 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
 components:
     schemas:
+        FieldBehavior:
+            enum:
+                - FIELD_BEHAVIOR_UNSPECIFIED
+                - OPTIONAL
+                - REQUIRED
+                - OUTPUT_ONLY
+                - INPUT_ONLY
+                - IMMUTABLE
+            type: string
+            format: enum
+            x-fern-type-name: FieldBehavior
+            source: google/api/field_behavior.proto
+        Kind:
+            enum:
+                - UNKNOWN_KIND
+                - KIND_1
+                - KIND_2
+            type: string
+            format: enum
+            x-fern-type-name: Kind
+            source: tests/enumoptions/message.proto
         examples.oneof.OneOfMessage:
             type: object
             properties:
-                payment_method:
-                    oneOf:
-                        - type: "null"
-                        - required:
-                            - creditCard
-                          type: object
-                          properties:
-                            creditCard:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            bankTransfer:
-                                type: "null"
-                            digitalWallet:
-                                type: "null"
-                        - required:
-                            - bankTransfer
-                          type: object
-                          properties:
-                            bankTransfer:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            creditCard:
-                                type: "null"
-                            digitalWallet:
-                                type: "null"
-                        - required:
-                            - digitalWallet
-                          type: object
-                          properties:
-                            digitalWallet:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            creditCard:
-                                type: "null"
-                            bankTransfer:
-                                type: "null"
-                contact_info:
-                    oneOf:
-                        - type: "null"
-                        - required:
-                            - email
-                          type: object
-                          properties:
-                            email:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            phone:
-                                type: "null"
-                            address:
-                                type: "null"
-                        - required:
-                            - phone
-                          type: object
-                          properties:
-                            phone:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            email:
-                                type: "null"
-                            address:
-                                type: "null"
-                        - required:
-                            - address
-                          type: object
-                          properties:
-                            address:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                            email:
-                                type: "null"
-                            phone:
-                                type: "null"
                 id:
                     type: string
                     description: Identifier for the message
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                creditCard:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                bankTransfer:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                digitalWallet:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                email:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                phone:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+                address:
+                    type: string
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue

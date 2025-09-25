@@ -46,13 +46,25 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 label:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message
+            source: tests/noannotations/message.proto
         Status:
             type: object
             properties:

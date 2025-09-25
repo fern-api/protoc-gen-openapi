@@ -21,12 +21,7 @@ paths:
                 - name: kind
                   in: query
                   schema:
-                    enum:
-                        - UNKNOWN_KIND
-                        - KIND_1
-                        - KIND_2
-                    type: string
-                    format: enum
+                    $ref: '#/components/schemas/Kind'
             requestBody:
                 content:
                     application/json: {}
@@ -54,16 +49,25 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
+        Kind:
+            enum:
+                - UNKNOWN_KIND
+                - KIND_1
+                - KIND_2
+            type: string
+            format: enum
+            x-fern-type-name: Kind
+            source: tests/enumoptions/message.proto
         Message:
             type: object
             properties:
                 kind:
-                    enum:
-                        - UNKNOWN_KIND
-                        - KIND_1
-                        - KIND_2
-                    type: string
-                    format: enum
+                    $ref: '#/components/schemas/Kind'
+            x-fern-type-name: Message
+            source: tests/enumoptions/message.proto
         Status:
             type: object
             properties:

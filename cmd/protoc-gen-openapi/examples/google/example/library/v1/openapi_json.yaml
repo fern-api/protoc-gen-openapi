@@ -35,6 +35,9 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: pageToken
                   in: query
                   description: |-
@@ -44,6 +47,9 @@ paths:
                      returned from the previous call to `ListShelves` method.
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             responses:
                 "200":
                     description: OK
@@ -153,6 +159,9 @@ paths:
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: pageToken
                   in: query
                   description: |-
@@ -162,6 +171,9 @@ paths:
                      returned from the previous call to `ListBooks` method.
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             responses:
                 "200":
                     description: OK
@@ -263,6 +275,9 @@ paths:
                   description: The name of the book to update.
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -402,20 +417,35 @@ components:
                         The resource name of the book.
                          Book names have the form `shelves/{shelf_id}/books/{book_id}`.
                          The name is ignored when creating a book.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 author:
                     type: string
                     description: The name of the book author.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 title:
                     type: string
                     description: The title of the book.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 read:
                     type: boolean
                     description: Value indicating whether the book has been read.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BoolValue
                 borrowTime:
                     readOnly: true
                     type: string
                     description: The previous borrowing timestamp.
                     format: date-time
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Timestamp
                 createdAt:
                     readOnly: true
                     type: string
@@ -427,6 +457,20 @@ components:
                     description: The last update date and time.
                     format: date-time
             description: A single book in the library.
+            x-fern-type-name: Book
+            source: google/example/library/v1/library.proto
+        FieldBehavior:
+            enum:
+                - FIELD_BEHAVIOR_UNSPECIFIED
+                - OPTIONAL
+                - REQUIRED
+                - OUTPUT_ONLY
+                - INPUT_ONLY
+                - IMMUTABLE
+            type: string
+            format: enum
+            x-fern-type-name: FieldBehavior
+            source: google/api/field_behavior.proto
         GoogleProtobufAny:
             type: object
             properties:
@@ -435,6 +479,9 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         ListBooksResponse:
             type: object
             properties:
@@ -451,7 +498,12 @@ components:
                          [ListBooksRequest.page_token][google.example.library.v1.ListBooksRequest.page_token]
                          field in the subsequent call to `ListBooks` method to retrieve the next
                          page of results.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             description: Response message for LibraryService.ListBooks.
+            x-fern-type-name: ListBooksResponse
+            source: google/example/library/v1/library.proto
         ListShelvesResponse:
             type: object
             properties:
@@ -468,7 +520,12 @@ components:
                          [ListShelvesRequest.page_token][google.example.library.v1.ListShelvesRequest.page_token]
                          field in the subsequent call to `ListShelves` method to retrieve the next
                          page of results.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             description: Response message for LibraryService.ListShelves.
+            x-fern-type-name: ListShelvesResponse
+            source: google/example/library/v1/library.proto
         MergeShelvesRequest:
             required:
                 - name
@@ -478,12 +535,20 @@ components:
                 name:
                     type: string
                     description: The name of the shelf we're adding books to.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 otherShelfName:
                     type: string
                     description: The name of the shelf we're removing books from and deleting.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             description: |-
                 Describes the shelf being removed (other_shelf_name) and updated
                  (name) in this merge.
+            x-fern-type-name: MergeShelvesRequest
+            source: google/example/library/v1/library.proto
         MoveBookRequest:
             required:
                 - name
@@ -493,12 +558,20 @@ components:
                 name:
                     type: string
                     description: The name of the book to move.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 otherShelfName:
                     type: string
                     description: The name of the destination shelf.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             description: |-
                 Describes what book to move (name) and what shelf we're moving it
                  to (other_shelf_name).
+            x-fern-type-name: MoveBookRequest
+            source: google/example/library/v1/library.proto
         Shelf:
             required:
                 - name
@@ -510,9 +583,15 @@ components:
                         The resource name of the shelf.
                          Shelf names have the form `shelves/{shelf_id}`.
                          The name is ignored when creating a shelf.
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 theme:
                     type: string
                     description: The theme of the shelf
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 nextSortAt:
                     readOnly: true
                     type: string
@@ -529,6 +608,8 @@ components:
                     description: The last update date and time.
                     format: date-time
             description: A Shelf contains a collection of books with a theme.
+            x-fern-type-name: Shelf
+            source: google/example/library/v1/library.proto
         Status:
             type: object
             properties:

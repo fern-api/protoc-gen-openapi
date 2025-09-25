@@ -37,42 +37,69 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: string_type
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: recursive_type.parent_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.child_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.parent.parent_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.parent.child.child_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: embedded_type.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.sub_sub_message.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.sub_sub_message.integers
                   in: query
                   schema:
@@ -80,12 +107,18 @@ paths:
                     items:
                         type: integer
                         format: int32
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Int64Value
                 - name: repeated_type
                   in: query
                   schema:
                     type: array
                     items:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 - name: value_type
                   in: query
                   description: Description of value
@@ -102,54 +135,89 @@ paths:
                   in: query
                   schema:
                     type: boolean
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BoolValue
                 - name: bytes_value_type
                   in: query
                   schema:
                     type: string
                     format: bytes
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BytesValue
                 - name: int32_value_type
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: uint32_value_type
                   in: query
                   schema:
                     type: integer
                     format: uint32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: string_value_type
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: int64_value_type
                   in: query
                   schema:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: uint64_value_type
                   in: query
                   schema:
-                    type: string
+                    type: integer
+                    format: uint64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: float_value_type
                   in: query
                   schema:
                     type: number
                     format: float
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 - name: double_value_type
                   in: query
                   schema:
                     type: number
                     format: double
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 - name: timestamp_type
                   in: query
                   schema:
                     type: string
                     format: date-time
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Timestamp
                 - name: duration_type
                   in: query
                   schema:
                     pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
                     type: string
                     description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Duration
             responses:
                 "200":
                     description: OK
@@ -173,6 +241,9 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -202,42 +273,69 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: string_type
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: recursive_type.parent_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.child_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.parent.parent_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: recursive_type.child.parent.child.child_id
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: embedded_type.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.sub_sub_message.message_id
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: sub_type.sub_sub_message.integers
                   in: query
                   schema:
@@ -245,12 +343,18 @@ paths:
                     items:
                         type: integer
                         format: int32
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Int64Value
                 - name: repeated_type
                   in: query
                   schema:
                     type: array
                     items:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 - name: value_type
                   in: query
                   description: Description of value
@@ -267,59 +371,97 @@ paths:
                   in: query
                   schema:
                     type: boolean
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BoolValue
                 - name: bytes_value_type
                   in: query
                   schema:
                     type: string
                     format: bytes
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BytesValue
                 - name: int32_value_type
                   in: query
                   schema:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: uint32_value_type
                   in: query
                   schema:
                     type: integer
                     format: uint32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: string_value_type
                   in: query
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 - name: int64_value_type
                   in: query
                   schema:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: uint64_value_type
                   in: query
                   schema:
-                    type: string
+                    type: integer
+                    format: uint64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 - name: float_value_type
                   in: query
                   schema:
                     type: number
                     format: float
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 - name: double_value_type
                   in: query
                   schema:
                     type: number
                     format: double
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 - name: timestamp_type
                   in: query
                   schema:
                     type: string
                     format: date-time
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Timestamp
                 - name: duration_type
                   in: query
                   schema:
                     pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
                     type: string
                     description: Represents a a duration between -315,576,000,000s and 315,576,000,000s (around 10000 years). Precision is in nanoseconds. 1 nanosecond is represented as 0.000000001s
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Duration
             requestBody:
                 content:
                     application/json:
                         schema:
                             type: object
+                            x-fern-encoding:
+                                proto:
+                                    type: google.protobuf.Struct
                 required: true
             responses:
                 "200":
@@ -328,6 +470,9 @@ paths:
                         application/json:
                             schema:
                                 type: object
+                                x-fern-encoding:
+                                    proto:
+                                        type: google.protobuf.Struct
                 default:
                     description: Default error response
                     content:
@@ -384,15 +529,27 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         GoogleProtobufValue:
             description: Represents a dynamically typed value which can be either null, a number, a string, a boolean, a recursive struct value, or a list of values.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Value
         Message:
             type: object
             properties:
                 message_id:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 string_type:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 recursive_type:
                     $ref: '#/components/schemas/RecursiveParent'
                 embedded_type:
@@ -403,6 +560,9 @@ components:
                     type: array
                     items:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 repeated_sub_type:
                     type: array
                     items:
@@ -415,12 +575,21 @@ components:
                     type: object
                     additionalProperties:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 body:
                     type: object
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Struct
                 media:
                     type: array
                     items:
                         type: object
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Struct
                 value_type:
                     allOf:
                         - $ref: '#/components/schemas/GoogleProtobufValue'
@@ -432,54 +601,104 @@ components:
                     description: Description of repeated value
                 bool_value_type:
                     type: boolean
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BoolValue
                 bytes_value_type:
                     type: string
                     format: bytes
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.BytesValue
                 int32_value_type:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 uint32_value_type:
                     type: integer
                     format: uint32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 string_value_type:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 int64_value_type:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 uint64_value_type:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 float_value_type:
                     type: number
                     format: float
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 double_value_type:
                     type: number
                     format: double
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.DoubleValue
                 timestamp_type:
                     type: string
                     format: date-time
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Timestamp
                 duration_type:
                     pattern: ^-?(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,9})?s$
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Duration
+            x-fern-type-name: Message
+            source: tests/protobuftypes/message.proto
         Message_EmbMessage:
             type: object
             properties:
                 message_id:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message_EmbMessage
+            source: tests/protobuftypes/message.proto
         RecursiveChild:
             type: object
             properties:
                 child_id:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 parent:
                     $ref: '#/components/schemas/RecursiveParent'
+            x-fern-type-name: RecursiveChild
+            source: tests/protobuftypes/message.proto
         RecursiveParent:
             type: object
             properties:
                 parent_id:
                     type: integer
                     format: int32
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 child:
                     $ref: '#/components/schemas/RecursiveChild'
+            x-fern-type-name: RecursiveParent
+            source: tests/protobuftypes/message.proto
         Status:
             type: object
             properties:
@@ -501,17 +720,30 @@ components:
             properties:
                 message_id:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 sub_sub_message:
                     $ref: '#/components/schemas/SubSubMessage'
+            x-fern-type-name: SubMessage
+            source: tests/protobuftypes/message.proto
         SubSubMessage:
             type: object
             properties:
                 message_id:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 integers:
                     type: array
                     items:
                         type: integer
                         format: int32
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Int64Value
+            x-fern-type-name: SubSubMessage
+            source: tests/protobuftypes/message.proto
 tags:
     - name: Messaging
