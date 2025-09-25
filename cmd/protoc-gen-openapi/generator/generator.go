@@ -871,7 +871,13 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		}
 
 		var required []string
+		
 		for _, field := range message.Fields {
+			// Skip fields that are part of a oneOf
+			if field.Oneof != nil {
+				continue
+			}
+			
 			// Get the field description from the comments.
 			description := g.filterCommentString(field.Comments.Leading)
 			// Check the field annotations to see if this is a readonly or writeonly field.
@@ -940,6 +946,9 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 			Required:    required,
 		}
 
+		// Add oneOf fields to the schema
+		g.addOneOfFieldsToSchema(d, message.Oneofs, schema, schemaName, filename)
+
 		// Merge any `Schema` annotations with the current
 		extSchema := proto.GetExtension(message.Desc.Options(), v3.E_Schema)
 		if extSchema != nil {
@@ -993,5 +1002,52 @@ func (g *OpenAPIv3Generator) createEnumSchema(enumName string, enumValues protor
 				},
 			},
 		},
+	}
+}
+
+
+// addOneOfFieldsToSchema adds oneOf fields to the schema
+func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*protogen.Oneof, schema *v3.Schema, schemaName string, filename string) {
+	if oneofs == nil {
+		return
+	}
+
+	for _, oneOfProto := range oneofs {
+		oneOfFieldName := string(oneOfProto.Desc.Name())
+		oneOfSchemas := make([]*v3.SchemaOrReference, 0, len(oneOfProto.Fields))
+		
+		for _, fieldProto := range oneOfProto.Fields {
+			fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
+			if fieldSchema != nil {
+				oneOfSchemas = append(oneOfSchemas, fieldSchema)
+			}
+		}
+		
+		// Add null as an option
+		nullSchema := &v3.SchemaOrReference{
+			Oneof: &v3.SchemaOrReference_Schema{
+				Schema: &v3.Schema{
+					Type: "null",
+				},
+			},
+		}
+		oneOfSchemas = append(oneOfSchemas, nullSchema)
+		
+		// Create the oneOf schema
+		oneOfSchema := &v3.SchemaOrReference{
+			Oneof: &v3.SchemaOrReference_Schema{
+				Schema: &v3.Schema{
+					OneOf: oneOfSchemas,
+				},
+			},
+		}
+		
+		schema.Properties.AdditionalProperties = append(
+			schema.Properties.AdditionalProperties,
+			&v3.NamedSchemaOrReference{
+				Name:  oneOfFieldName,
+				Value: oneOfSchema,
+			},
+		)
 	}
 }
