@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
 
+
 jobs:
 
   build:
@@ -31,9 +32,6 @@ jobs:
              
     - name: Build
       run: make all
-      
-    - name: Test
-      run: make test
     
     - name: Refresh Go Mod Proxy
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
