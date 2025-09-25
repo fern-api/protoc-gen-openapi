@@ -17,6 +17,9 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -42,9 +45,18 @@ components:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 label:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: AnotherMessage
+            source: tests/mapfields/message.proto
         GoogleProtobufAny:
             type: object
             properties:
@@ -53,11 +65,17 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             type: object
             properties:
                 messageId:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 anotherMessage:
                     $ref: '#/components/schemas/AnotherMessage'
                 subMessage:
@@ -66,6 +84,9 @@ components:
                     type: array
                     items:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 subMessageList:
                     type: array
                     items:
@@ -74,10 +95,16 @@ components:
                     type: array
                     items:
                         type: object
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Struct
                 stringsMap:
                     type: object
                     additionalProperties:
                         type: string
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
                 subMessagesMap:
                     type: object
                     additionalProperties:
@@ -86,13 +113,27 @@ components:
                     type: object
                     additionalProperties:
                         type: object
+                        x-fern-encoding:
+                            proto:
+                                type: google.protobuf.Struct
+            x-fern-type-name: Message
+            source: tests/mapfields/message.proto
         Message_SubMessage:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 label:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message_SubMessage
+            source: tests/mapfields/message.proto
         Status:
             type: object
             properties:

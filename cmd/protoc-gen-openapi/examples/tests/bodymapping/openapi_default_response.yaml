@@ -17,6 +17,9 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -46,13 +49,24 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             type: object
             properties:
                 messageId:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 text:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message
+            source: tests/bodymapping/message.proto
         Status:
             type: object
             properties:

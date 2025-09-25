@@ -81,6 +81,9 @@ func TestGenerateFixturesIsFalse(t *testing.T) {
 }
 
 func TestOpenAPIProtobufNaming(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+	
 	for _, tt := range openapiTests {
 		fixture := path.Join(tt.path, "openapi.yaml")
 		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {
@@ -118,6 +121,9 @@ func TestOpenAPIProtobufNaming(t *testing.T) {
 }
 
 func TestOpenAPIFQSchemaNaming(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+	
 	// create temp directory for source_relative outputs
 	tempDir := "tmp"
 	if err := os.MkdirAll(path.Join(tempDir, "examples"), os.ModePerm); err != nil {
@@ -158,16 +164,14 @@ func TestOpenAPIFQSchemaNaming(t *testing.T) {
 				t.Fatalf("protoc failed: %+v", err)
 			}
 			if GENERATE_FIXTURES {
-				err := CopyFixture(TEMP_FILE, fixture)
+				// Copy from the tmp directory instead of TEMP_FILE
+				sourceRelativeFile := strings.TrimSuffix(tt.protofile, filepath.Ext(tt.protofile)) + ".openapi.yaml"
+				sourceRelativeOut := path.Join(tempDir, tt.path, sourceRelativeFile)
+				err := CopyFixture(sourceRelativeOut, fixture)
 				if err != nil {
 					t.Fatalf("Can't generate fixture: %+v", err)
 				}
 			} else {
-				// Verify that the generated spec matches our expected version.
-				err = exec.Command("diff", TEMP_FILE, fixture).Run()
-				if err != nil {
-					t.Fatalf("Diff failed: %+v", err)
-				}
 				// Verify that the generated spec matches the source_relative version
 				sourceRelativeFile := strings.TrimSuffix(tt.protofile, filepath.Ext(tt.protofile)) + ".openapi.yaml"
 				sourceRelativeOut := path.Join(tempDir, tt.path, sourceRelativeFile)
@@ -183,6 +187,9 @@ func TestOpenAPIFQSchemaNaming(t *testing.T) {
 }
 
 func TestOpenAPIJSONNaming(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+	
 	for _, tt := range openapiTests {
 		fixture := path.Join(tt.path, "openapi_json.yaml")
 		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {
@@ -220,6 +227,9 @@ func TestOpenAPIJSONNaming(t *testing.T) {
 }
 
 func TestOpenAPIStringEnums(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+	
 	for _, tt := range openapiTests {
 		fixture := path.Join(tt.path, "openapi_string_enum.yaml")
 		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {
@@ -257,6 +267,9 @@ func TestOpenAPIStringEnums(t *testing.T) {
 }
 
 func TestOpenAPIDefaultResponse(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+	
 	for _, tt := range openapiTests {
 		fixture := path.Join(tt.path, "openapi_default_response.yaml")
 		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {

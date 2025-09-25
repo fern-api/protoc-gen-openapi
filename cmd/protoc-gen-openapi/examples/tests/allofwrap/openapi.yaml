@@ -38,6 +38,18 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        FieldBehavior:
+            enum:
+                - FIELD_BEHAVIOR_UNSPECIFIED
+                - OPTIONAL
+                - REQUIRED
+                - OUTPUT_ONLY
+                - INPUT_ONLY
+                - IMMUTABLE
+            type: string
+            format: enum
+            x-fern-type-name: FieldBehavior
+            source: google/api/field_behavior.proto
         GoogleProtobufAny:
             type: object
             properties:
@@ -46,6 +58,9 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             type: object
             properties:
@@ -69,11 +84,18 @@ components:
                     items:
                         $ref: '#/components/schemas/Message_Sub'
                     description: test repeated, should not allof wrapped
+            x-fern-type-name: Message
+            source: tests/allofwrap/message.proto
         Message_Sub:
             type: object
             properties:
                 content:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message_Sub
+            source: tests/allofwrap/message.proto
         Status:
             type: object
             properties:

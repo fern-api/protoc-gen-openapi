@@ -56,16 +56,28 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         Message:
             title: This is an overridden message schema title
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 label:
                     title: this is an overriden field schema title
                     maxLength: 255
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: Message
+            source: tests/openapiv3annotations/message.proto
         Status:
             type: object
             properties:

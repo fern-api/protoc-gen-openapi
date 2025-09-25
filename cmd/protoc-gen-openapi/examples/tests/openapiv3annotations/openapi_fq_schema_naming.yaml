@@ -48,6 +48,27 @@ paths:
                 - BasicAuth: []
 components:
     schemas:
+        FieldBehavior:
+            enum:
+                - FIELD_BEHAVIOR_UNSPECIFIED
+                - OPTIONAL
+                - REQUIRED
+                - OUTPUT_ONLY
+                - INPUT_ONLY
+                - IMMUTABLE
+            type: string
+            format: enum
+            x-fern-type-name: FieldBehavior
+            source: google/api/field_behavior.proto
+        Kind:
+            enum:
+                - UNKNOWN_KIND
+                - KIND_1
+                - KIND_2
+            type: string
+            format: enum
+            x-fern-type-name: Kind
+            source: tests/enumoptions/message.proto
         google.protobuf.Any:
             type: object
             properties:
@@ -56,6 +77,9 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         google.rpc.Status:
             type: object
             properties:
@@ -77,11 +101,20 @@ components:
             type: object
             properties:
                 id:
-                    type: string
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
                 label:
                     title: this is an overriden field schema title
                     maxLength: 255
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: tests.openapiv3annotations.message.v1.Message
+            source: tests/openapiv3annotations/message.proto
     securitySchemes:
         BasicAuth:
             type: http

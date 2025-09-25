@@ -17,6 +17,9 @@ paths:
                   required: true
                   schema:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             requestBody:
                 content:
                     application/json:
@@ -38,6 +41,27 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
 components:
     schemas:
+        FieldBehavior:
+            enum:
+                - FIELD_BEHAVIOR_UNSPECIFIED
+                - OPTIONAL
+                - REQUIRED
+                - OUTPUT_ONLY
+                - INPUT_ONLY
+                - IMMUTABLE
+            type: string
+            format: enum
+            x-fern-type-name: FieldBehavior
+            source: google/api/field_behavior.proto
+        Kind:
+            enum:
+                - UNKNOWN_KIND
+                - KIND_1
+                - KIND_2
+            type: string
+            format: enum
+            x-fern-type-name: Kind
+            source: tests/enumoptions/message.proto
         google.protobuf.Any:
             type: object
             properties:
@@ -46,6 +70,9 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+            x-fern-encoding:
+                proto:
+                    type: google.protobuf.Any
         google.rpc.Status:
             type: object
             properties:
@@ -67,7 +94,15 @@ components:
             properties:
                 messageId:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
                 text:
                     type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
+            x-fern-type-name: tests.bodymappying.message.v1.Message
+            source: tests/bodymapping/message.proto
 tags:
     - name: Messaging
