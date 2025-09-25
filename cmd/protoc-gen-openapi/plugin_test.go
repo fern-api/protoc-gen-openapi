@@ -32,6 +32,7 @@ var openapiTests = []struct {
 	protofile string
 }{
 	{name: "OneOf Fields", path: "examples/tests/oneof/", protofile: "message.proto"},
+	{name: "OneOf Empty", path: "examples/tests/oneof_empty/", protofile: "message.proto"},
 	{name: "Google Library example", path: "examples/google/example/library/v1/", protofile: "library.proto"},
 	{name: "Body mapping", path: "examples/tests/bodymapping/", protofile: "message.proto"},
 	{name: "Map fields", path: "examples/tests/mapfields/", protofile: "message.proto"},

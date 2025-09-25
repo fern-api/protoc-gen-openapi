@@ -178,11 +178,13 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                maybe:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
+                _maybe:
+                    oneOf:
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: "null"
             x-fern-type-name: tests.pathparams.message.v1.Message
             source: tests/pathparams/message.proto
 tags:

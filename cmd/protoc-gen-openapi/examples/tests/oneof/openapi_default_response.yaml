@@ -53,36 +53,36 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                creditCard:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                bankTransfer:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                digitalWallet:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                email:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                phone:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                address:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
+                payment_method:
+                    oneOf:
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: "null"
+                contact_info:
+                    oneOf:
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: string
+                          x-fern-encoding:
+                            proto:
+                                type: google.protobuf.StringValue
+                        - type: "null"
             description: Message demonstrating oneof field usage
             x-fern-type-name: OneOfMessage
             source: tests/oneof/message.proto

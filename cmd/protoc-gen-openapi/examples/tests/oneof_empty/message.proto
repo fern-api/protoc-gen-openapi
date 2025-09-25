@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package examples.oneof_empty;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/google/gnostic/examples/oneof_empty";
+
+// Message demonstrating oneof field usage with google.protobuf.Empty
+message OpcAuthenticationConfig {
+  // Authentication configuration for OPC-UA server connection
+  oneof opc_authentication_config {
+    google.protobuf.Empty anonymous = 1;
+    string username_password = 2;
+  }
+}
+
+// Service definition
+service OpcService {
+  rpc ConfigureAuthentication(OpcAuthenticationConfig) returns (OpcAuthenticationConfig) {
+    option (google.api.http) = {
+      post: "/v1/opc/configure"
+      body: "*"
+    };
+  }
+}

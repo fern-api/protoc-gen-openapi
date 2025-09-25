@@ -3,20 +3,20 @@
 
 openapi: 3.0.3
 info:
-    title: OneOfService API
+    title: OpcService API
     description: Service definition
     version: 0.0.1
 paths:
-    /v1/payments:
+    /v1/opc/configure:
         post:
             tags:
-                - OneOfService
-            operationId: OneOfService_CreatePayment
+                - OpcService
+            operationId: OpcService_ConfigureAuthentication
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/OneOfMessage'
+                            $ref: '#/components/schemas/OpcAuthenticationConfig'
                 required: true
             responses:
                 "200":
@@ -24,7 +24,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/OneOfMessage'
+                                $ref: '#/components/schemas/OpcAuthenticationConfig'
                 default:
                     description: Default error response
                     content:
@@ -44,48 +44,21 @@ components:
             x-fern-encoding:
                 proto:
                     type: google.protobuf.Any
-        OneOfMessage:
+        OpcAuthenticationConfig:
             type: object
             properties:
-                id:
-                    type: string
-                    description: Identifier for the message
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                payment_method:
+                opc_authentication_config:
                     oneOf:
-                        - type: string
-                          x-fern-encoding:
-                            proto:
-                                type: google.protobuf.StringValue
-                        - type: string
-                          x-fern-encoding:
-                            proto:
-                                type: google.protobuf.StringValue
+                        - type: object
+                          properties: {}
                         - type: string
                           x-fern-encoding:
                             proto:
                                 type: google.protobuf.StringValue
                         - type: "null"
-                contact_info:
-                    oneOf:
-                        - type: string
-                          x-fern-encoding:
-                            proto:
-                                type: google.protobuf.StringValue
-                        - type: string
-                          x-fern-encoding:
-                            proto:
-                                type: google.protobuf.StringValue
-                        - type: string
-                          x-fern-encoding:
-                            proto:
-                                type: google.protobuf.StringValue
-                        - type: "null"
-            description: Message demonstrating oneof field usage
-            x-fern-type-name: OneOfMessage
-            source: tests/oneof/message.proto
+            description: Message demonstrating oneof field usage with google.protobuf.Empty
+            x-fern-type-name: OpcAuthenticationConfig
+            source: tests/oneof_empty/message.proto
         Status:
             type: object
             properties:
@@ -103,4 +76,4 @@ components:
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
-    - name: OneOfService
+    - name: OpcService
