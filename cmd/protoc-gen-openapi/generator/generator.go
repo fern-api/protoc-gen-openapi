@@ -1023,13 +1023,28 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 		} else {
 			// Handle google.protobuf.Empty as an empty object in oneof context
 			typeName := g.reflect.fullMessageTypeName(fieldProto.Desc.Message())
+			fieldName := g.reflect.formatFieldName(fieldProto.Desc)
 			if typeName == ".google.protobuf.Empty" {
 				emptyObjectSchema := &v3.SchemaOrReference{
 					Oneof: &v3.SchemaOrReference_Schema{
 						Schema: &v3.Schema{
 							Type: "object",
 							Properties: &v3.Properties{
-								AdditionalProperties: []*v3.NamedSchemaOrReference{},
+								AdditionalProperties: []*v3.NamedSchemaOrReference{
+									{
+										Name: fieldName,
+										Value: &v3.SchemaOrReference{
+											Oneof: &v3.SchemaOrReference_Schema{
+												Schema: &v3.Schema{
+													Type: "object",
+													Properties: &v3.Properties{
+														AdditionalProperties: []*v3.NamedSchemaOrReference{},
+													},
+												},
+											},
+										},
+									},
+								},
 							},
 						},
 					},
