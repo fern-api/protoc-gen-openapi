@@ -7,13 +7,13 @@ info:
     description: Messaging service
     version: 0.0.1
 paths:
-    /v1/messages/{messageId}:
+    /v1/messages/{message_id}:
         post:
             tags:
                 - Messaging
             operationId: Messaging_CreateMessage
             parameters:
-                - name: messageId
+                - name: message_id
                   in: path
                   required: true
                   schema:
@@ -21,7 +21,7 @@ paths:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                - name: notUsed
+                - name: not_used
                   in: query
                   schema:
                     type: string
@@ -47,7 +47,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
-    /v1/messages/{message_id}:
         patch:
             tags:
                 - Messaging
@@ -140,17 +139,17 @@ components:
         tests.jsonnames.message.v1.Message:
             type: object
             properties:
-                messageId:
+                message_id:
                     type: string
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                bodyText:
+                body_text:
                     type: string
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                notUsed:
+                not_used:
                     type: string
                     x-fern-encoding:
                         proto:

@@ -91,15 +91,15 @@ components:
             properties:
                 sub:
                     $ref: '#/components/schemas/tests.allofwrap.message.v1.Message_Sub'
-                subInput:
+                sub_input:
                     writeOnly: true
                     allOf:
                         - $ref: '#/components/schemas/tests.allofwrap.message.v1.Message_Sub'
-                subOutput:
+                sub_output:
                     readOnly: true
                     allOf:
                         - $ref: '#/components/schemas/tests.allofwrap.message.v1.Message_Sub'
-                subDesc:
+                sub_desc:
                     allOf:
                         - $ref: '#/components/schemas/tests.allofwrap.message.v1.Message_Sub'
                     description: this sub has a description

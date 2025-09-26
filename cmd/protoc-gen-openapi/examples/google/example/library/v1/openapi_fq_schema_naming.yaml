@@ -27,7 +27,7 @@ paths:
                  shelves will not necessarily be added to the end of this list.
             operationId: LibraryService_ListShelves
             parameters:
-                - name: pageSize
+                - name: page_size
                   in: query
                   description: |-
                     Requested page size. Server may return fewer shelves than requested.
@@ -38,7 +38,7 @@ paths:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.Int64Value
-                - name: pageToken
+                - name: page_token
                   in: query
                   description: |-
                     A token identifying a page of results the server should return.
@@ -151,7 +151,7 @@ paths:
                   required: true
                   schema:
                     type: string
-                - name: pageSize
+                - name: page_size
                   in: query
                   description: |-
                     Requested page size. Server may return fewer books than requested.
@@ -162,7 +162,7 @@ paths:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.Int64Value
-                - name: pageToken
+                - name: page_token
                   in: query
                   description: |-
                     A token identifying a page of results the server should return.
@@ -459,7 +459,7 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.BoolValue
-                borrowTime:
+                borrow_time:
                     readOnly: true
                     type: string
                     description: The previous borrowing timestamp.
@@ -467,12 +467,12 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.Timestamp
-                createdAt:
+                created_at:
                     readOnly: true
                     type: string
                     description: The creation date and time.
                     format: date-time
-                updatedAt:
+                updated_at:
                     readOnly: true
                     type: string
                     description: The last update date and time.
@@ -488,7 +488,7 @@ components:
                     items:
                         $ref: '#/components/schemas/google.example.library.v1.Book'
                     description: The list of books.
-                nextPageToken:
+                next_page_token:
                     type: string
                     description: |-
                         A token to retrieve next page of results.
@@ -510,7 +510,7 @@ components:
                     items:
                         $ref: '#/components/schemas/google.example.library.v1.Shelf'
                     description: The list of shelves.
-                nextPageToken:
+                next_page_token:
                     type: string
                     description: |-
                         A token to retrieve next page of results.
@@ -527,7 +527,7 @@ components:
         google.example.library.v1.MergeShelvesRequest:
             required:
                 - name
-                - otherShelfName
+                - other_shelf_name
             type: object
             properties:
                 name:
@@ -536,7 +536,7 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                otherShelfName:
+                other_shelf_name:
                     type: string
                     description: The name of the shelf we're removing books from and deleting.
                     x-fern-encoding:
@@ -550,7 +550,7 @@ components:
         google.example.library.v1.MoveBookRequest:
             required:
                 - name
-                - otherShelfName
+                - other_shelf_name
             type: object
             properties:
                 name:
@@ -559,7 +559,7 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                otherShelfName:
+                other_shelf_name:
                     type: string
                     description: The name of the destination shelf.
                     x-fern-encoding:
@@ -590,17 +590,17 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                nextSortAt:
+                next_sort_at:
                     readOnly: true
                     type: string
                     description: The next sorting date.
                     format: date
-                createdAt:
+                created_at:
                     readOnly: true
                     type: string
                     description: The creation date and time.
                     format: date-time
-                updatedAt:
+                updated_at:
                     readOnly: true
                     type: string
                     description: The last update date and time.

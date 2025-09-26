@@ -6,13 +6,13 @@ info:
     title: Messaging API
     version: 0.0.1
 paths:
-    /v1/messages/{messageId}:
+    /v1/messages/{message_id}:
         get:
             tags:
                 - Messaging
             operationId: Messaging_GetMessage
             parameters:
-                - name: messageId
+                - name: message_id
                   in: path
                   required: true
                   schema:
@@ -20,7 +20,7 @@ paths:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                - name: userId
+                - name: user_id
                   in: query
                   schema:
                     type: integer
@@ -46,7 +46,7 @@ paths:
                 - Messaging
             operationId: Messaging_CreateMessage
             parameters:
-                - name: messageId
+                - name: message_id
                   in: path
                   required: true
                   schema:
@@ -73,13 +73,13 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /v1/users/{userId}/messages/{messageId}:
+    /v1/users/{user_id}/messages/{message_id}:
         get:
             tags:
                 - Messaging
             operationId: Messaging_GetUserMessage
             parameters:
-                - name: userId
+                - name: user_id
                   in: path
                   required: true
                   schema:
@@ -88,7 +88,7 @@ paths:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.Int64Value
-                - name: messageId
+                - name: message_id
                   in: path
                   required: true
                   schema:
@@ -125,12 +125,12 @@ components:
         Message:
             type: object
             properties:
-                messageId:
+                message_id:
                     type: string
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                userId:
+                user_id:
                     type: integer
                     format: uint64
                     x-fern-encoding:
@@ -141,11 +141,19 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                maybe:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
+                _maybe:
+                    oneOf:
+                        - required:
+                            - maybe
+                          type: object
+                          properties:
+                            maybe:
+                                type: string
+                                x-fern-encoding:
+                                    proto:
+                                        type: google.protobuf.StringValue
+                          additionalProperties: false
+                        - type: "null"
             x-fern-type-name: Message
             source: tests/pathparams/message.proto
         Status:

@@ -3,8 +3,15 @@ syntax = "proto3";
 package examples.oneof;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/google/gnostic/examples/oneof";
+
+message EmptyOneOf {
+  oneof explicit_empty_one_of {
+    google.protobuf.Empty anonymous = 1;
+  }
+}
 
 // Message demonstrating oneof field usage
 message OneOfMessage {
@@ -17,13 +24,8 @@ message OneOfMessage {
     string bank_transfer = 3;
     string digital_wallet = 4;
   }
-
-  // Another oneof example with different types
-  oneof contact_info {
-    string email = 5;
-    string phone = 6;
-    string address = 7;
-  }
+  
+  EmptyOneOf authentication_config = 8;
 }
 
 // Service definition
