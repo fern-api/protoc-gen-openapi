@@ -6,13 +6,13 @@ info:
     title: Messaging API
     version: 1.2.3
 paths:
-    /v1/messages/{messageId}:
+    /v1/messages/{message_id}:
         patch:
             tags:
                 - Messaging
             operationId: Messaging_UpdateMessage
             parameters:
-                - name: messageId
+                - name: message_id
                   in: path
                   required: true
                   schema:
@@ -71,45 +71,45 @@ components:
         Message:
             type: object
             properties:
-                messageId:
+                message_id:
                     type: string
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                anotherMessage:
+                another_message:
                     $ref: '#/components/schemas/AnotherMessage'
-                subMessage:
+                sub_message:
                     $ref: '#/components/schemas/Message_SubMessage'
-                stringList:
+                string_list:
                     type: array
                     items:
                         type: string
                         x-fern-encoding:
                             proto:
                                 type: google.protobuf.StringValue
-                subMessageList:
+                sub_message_list:
                     type: array
                     items:
                         $ref: '#/components/schemas/Message_SubMessage'
-                objectList:
+                object_list:
                     type: array
                     items:
                         type: object
                         x-fern-encoding:
                             proto:
                                 type: google.protobuf.Struct
-                stringsMap:
+                strings_map:
                     type: object
                     additionalProperties:
                         type: string
                         x-fern-encoding:
                             proto:
                                 type: google.protobuf.StringValue
-                subMessagesMap:
+                sub_messages_map:
                     type: object
                     additionalProperties:
                         $ref: '#/components/schemas/Message_SubMessage'
-                objectsMap:
+                objects_map:
                     type: object
                     additionalProperties:
                         type: object

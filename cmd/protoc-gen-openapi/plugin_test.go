@@ -92,13 +92,14 @@ func TestOpenAPIProtobufNaming(t *testing.T) {
 			}
 		}
 		t.Run(tt.name, func(t *testing.T) {
-			// Run protoc and the protoc-gen-openapi plugin to generate an OpenAPI spec.
-			err := exec.Command("protoc",
-				"-I", "../../",
-				"-I", "../../third_party",
-				"-I", "examples",
-				path.Join(tt.path, tt.protofile),
-				"--openapi_out=naming=proto:.").Run()
+		// Run protoc and the protoc-gen-openapi plugin to generate an OpenAPI spec.
+		err := exec.Command("protoc",
+			"-I", "../../",
+			"-I", "../../third_party",
+			"-I", "examples",
+			path.Join(tt.path, tt.protofile),
+			"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
+			"--openapi_out=naming=proto:.").Run()
 			if err != nil {
 				t.Fatalf("protoc failed: %+v", err)
 			}
@@ -159,6 +160,7 @@ func TestOpenAPIFQSchemaNaming(t *testing.T) {
 				"-I", "../../third_party",
 				"-I", "examples",
 				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
 				"--openapi_out=fq_schema_naming=1:.").Run()
 			if err != nil {
 				t.Fatalf("protoc failed: %+v", err)
@@ -204,6 +206,7 @@ func TestOpenAPIJSONNaming(t *testing.T) {
 				"-I", "../../third_party",
 				"-I", "examples",
 				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
 				"--openapi_out=version=1.2.3:.").Run()
 			if err != nil {
 				t.Fatalf("protoc failed: %+v", err)
@@ -244,6 +247,7 @@ func TestOpenAPIStringEnums(t *testing.T) {
 				"-I", "../../third_party",
 				"-I", "examples",
 				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
 				"--openapi_out=enum_type=string:.").Run()
 			if err != nil {
 				t.Fatalf("protoc failed: %+v", err)
@@ -284,6 +288,7 @@ func TestOpenAPIDefaultResponse(t *testing.T) {
 				"-I", "../../third_party",
 				"-I", "examples",
 				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
 				"--openapi_out=default_response=true:.").Run()
 			if err != nil {
 				t.Fatalf("protoc failed: %+v", err)

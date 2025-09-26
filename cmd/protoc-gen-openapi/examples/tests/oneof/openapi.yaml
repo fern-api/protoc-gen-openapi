@@ -33,6 +33,17 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
+        EmptyOneOf:
+            oneOf:
+                - required:
+                    - anonymous
+                  type: object
+                  properties:
+                    anonymous:
+                        type: object
+                - type: "null"
+            x-fern-type-name: EmptyOneOf
+            source: tests/oneof/message.proto
         GoogleProtobufAny:
             type: object
             properties:
@@ -53,36 +64,41 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                credit_card:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                bank_transfer:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                digital_wallet:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                email:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                phone:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
-                address:
-                    type: string
-                    x-fern-encoding:
-                        proto:
-                            type: google.protobuf.StringValue
+                authentication_config:
+                    $ref: '#/components/schemas/EmptyOneOf'
+                payment_method:
+                    oneOf:
+                        - required:
+                            - credit_card
+                          type: object
+                          properties:
+                            credit_card:
+                                type: string
+                                x-fern-encoding:
+                                    proto:
+                                        type: google.protobuf.StringValue
+                          additionalProperties: false
+                        - required:
+                            - bank_transfer
+                          type: object
+                          properties:
+                            bank_transfer:
+                                type: string
+                                x-fern-encoding:
+                                    proto:
+                                        type: google.protobuf.StringValue
+                          additionalProperties: false
+                        - required:
+                            - digital_wallet
+                          type: object
+                          properties:
+                            digital_wallet:
+                                type: string
+                                x-fern-encoding:
+                                    proto:
+                                        type: google.protobuf.StringValue
+                          additionalProperties: false
+                        - type: "null"
             description: Message demonstrating oneof field usage
             x-fern-type-name: OneOfMessage
             source: tests/oneof/message.proto

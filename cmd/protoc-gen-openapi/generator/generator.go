@@ -1012,14 +1012,143 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 		return
 	}
 
+	// Check if this message only contains oneofs and no other fields
+	if len(schema.Properties.AdditionalProperties) == 0 {
+		// Flatten all oneofs to the message level
+		allOneOfSchemas := make([]*v3.SchemaOrReference, 0)
+		
+		for _, oneOfProto := range oneofs {
+			oneOfSchemas := make([]*v3.SchemaOrReference, 0, len(oneOfProto.Fields))
+			
+			for _, fieldProto := range oneOfProto.Fields {
+				fieldName := g.reflect.formatFieldName(fieldProto.Desc)
+				
+				// For google.protobuf.Empty, create a simple object schema
+				if fieldProto.Desc.Kind() == protoreflect.MessageKind && 
+				   g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
+					
+					emptySchema := &v3.SchemaOrReference{
+						Oneof: &v3.SchemaOrReference_Schema{
+							Schema: &v3.Schema{
+								Type: "object",
+								Properties: &v3.Properties{
+									AdditionalProperties: []*v3.NamedSchemaOrReference{
+										{
+											Name: fieldName,
+											Value: &v3.SchemaOrReference{
+												Oneof: &v3.SchemaOrReference_Schema{
+													Schema: &v3.Schema{
+														Type: "object",
+													},
+												},
+											},
+										},
+									},
+								},
+								Required: []string{fieldName},
+							},
+						},
+					}
+					oneOfSchemas = append(oneOfSchemas, emptySchema)
+					
+				} else {
+					// For other field types, wrap the field schema in an object with the specific property name
+					fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
+					
+					objectSchema := &v3.SchemaOrReference{
+						Oneof: &v3.SchemaOrReference_Schema{
+							Schema: &v3.Schema{
+								Type: "object",
+								Properties: &v3.Properties{
+									AdditionalProperties: []*v3.NamedSchemaOrReference{
+										{
+											Name:  fieldName,
+											Value: fieldSchema,
+										},
+									},
+								},
+								Required: []string{fieldName},
+								AdditionalProperties: &v3.AdditionalPropertiesItem{
+									Oneof: &v3.AdditionalPropertiesItem_Boolean{
+										Boolean: false,
+									},
+								},
+							},
+						},
+					}
+					oneOfSchemas = append(oneOfSchemas, objectSchema)
+				}
+			}
+			
+			// Add all schemas from this oneof to the combined list
+			allOneOfSchemas = append(allOneOfSchemas, oneOfSchemas...)
+		}
+		
+		// Add null as an option
+		nullSchema := &v3.SchemaOrReference{
+			Oneof: &v3.SchemaOrReference_Schema{
+				Schema: &v3.Schema{
+					Type: "null",
+				},
+			},
+		}
+		allOneOfSchemas = append(allOneOfSchemas, nullSchema)
+		
+		// Replace the schema with the oneOf at the top level
+		schema.OneOf = allOneOfSchemas
+		schema.Type = ""
+		schema.Properties = nil
+		
+		return
+	}
+
+	// Handle regular oneofs as nested properties when message has other fields
 	for _, oneOfProto := range oneofs {
 		oneOfFieldName := string(oneOfProto.Desc.Name())
 		oneOfSchemas := make([]*v3.SchemaOrReference, 0, len(oneOfProto.Fields))
 		
 		for _, fieldProto := range oneOfProto.Fields {
-			fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
-			if fieldSchema != nil {
-				oneOfSchemas = append(oneOfSchemas, fieldSchema)
+			fieldName := g.reflect.formatFieldName(fieldProto.Desc)
+			
+			// For google.protobuf.Empty, create a simple object schema
+			if fieldProto.Desc.Kind() == protoreflect.MessageKind && 
+			   g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
+				
+				emptySchema := &v3.SchemaOrReference{
+					Oneof: &v3.SchemaOrReference_Schema{
+						Schema: &v3.Schema{
+							Type: "object",
+						},
+					},
+				}
+				oneOfSchemas = append(oneOfSchemas, emptySchema)
+				
+			} else {
+				// For other field types, wrap the field schema in an object with the specific property name
+				fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
+				
+				objectSchema := &v3.SchemaOrReference{
+					Oneof: &v3.SchemaOrReference_Schema{
+						Schema: &v3.Schema{
+							Type: "object",
+							Properties: &v3.Properties{
+								AdditionalProperties: []*v3.NamedSchemaOrReference{
+									{
+										Name:  fieldName,
+										Value: fieldSchema,
+									},
+								},
+							},
+							Required: []string{fieldName},
+							AdditionalProperties: &v3.AdditionalPropertiesItem{
+								Oneof: &v3.AdditionalPropertiesItem_Boolean{
+									Boolean: false,
+								},
+							},
+						},
+					},
+				}
+				oneOfSchemas = append(oneOfSchemas, objectSchema)
 			}
 		}
 		
