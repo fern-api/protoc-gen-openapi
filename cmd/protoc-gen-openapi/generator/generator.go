@@ -32,6 +32,7 @@ import (
 	any_pb "google.golang.org/protobuf/types/known/anypb"
 
 	wk "github.com/fern-api/protoc-gen-openapi/cmd/protoc-gen-openapi/generator/wellknown"
+	fernoptions "github.com/fern-api/protoc-gen-openapi/extensions/fern"
 	v3 "github.com/fern-api/protoc-gen-openapi/openapiv3"
 )
 
@@ -760,6 +761,13 @@ func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, services []*pr
 
 					op, path2 := g.buildOperationV3(
 						d, operationID, service.GoName, comment, defaultHost, path, body, inputMessage, outputMessage)
+
+					extFernSummary := proto.GetExtension(method.Desc.Options(), fernoptions.E_Summary)
+					if extFernSummary != nil {
+						if summary, ok := extFernSummary.(string); ok && summary != "" {
+							op.Summary = summary
+						}
+					}
 
 					// Merge any `Operation` annotations with the current
 					extOperation := proto.GetExtension(method.Desc.Options(), v3.E_Operation)
