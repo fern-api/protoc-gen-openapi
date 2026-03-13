@@ -769,6 +769,19 @@ func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, services []*pr
 						}
 					}
 
+					// Add x-fern-sdk-group-name and x-fern-sdk-method-name extensions
+					// to preserve PascalCase naming in the generated SDK.
+					op.SpecificationExtension = append(op.SpecificationExtension,
+						&v3.NamedAny{
+							Name:  "x-fern-sdk-group-name",
+							Value: &v3.Any{Yaml: service.GoName},
+						},
+						&v3.NamedAny{
+							Name:  "x-fern-sdk-method-name",
+							Value: &v3.Any{Yaml: method.GoName},
+						},
+					)
+
 					// Merge any `Operation` annotations with the current
 					extOperation := proto.GetExtension(method.Desc.Options(), v3.E_Operation)
 					if extOperation != nil {

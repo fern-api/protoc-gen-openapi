@@ -46,6 +46,8 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             security:
                 - BasicAuth: []
+            x-fern-sdk-group-name: Messaging1
+            x-fern-sdk-method-name: UpdateMessage
 components:
     schemas:
         FieldBehavior:
