@@ -881,8 +881,10 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		var required []string
 		
 		for _, field := range message.Fields {
-			// Skip fields that are part of a oneOf
-			if field.Oneof != nil {
+			// Skip fields that are part of an explicit oneOf.
+			// Proto3 optional fields create synthetic oneofs that should be
+			// treated as regular optional fields, not as oneOf variants.
+			if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
 				continue
 			}
 			
@@ -1017,6 +1019,19 @@ func (g *OpenAPIv3Generator) createEnumSchema(enumName string, enumValues protor
 // addOneOfFieldsToSchema adds oneOf fields to the schema
 func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*protogen.Oneof, schema *v3.Schema, schemaName string, filename string) {
 	if oneofs == nil {
+		return
+	}
+
+	// Filter out synthetic oneofs created by proto3 optional fields.
+	// These are handled as regular optional fields in the field loop.
+	var explicitOneofs []*protogen.Oneof
+	for _, o := range oneofs {
+		if !o.Desc.IsSynthetic() {
+			explicitOneofs = append(explicitOneofs, o)
+		}
+	}
+	oneofs = explicitOneofs
+	if len(oneofs) == 0 {
 		return
 	}
 
