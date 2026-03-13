@@ -41,6 +41,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: GetMessage
         post:
             tags:
                 - Messaging
@@ -73,6 +75,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: CreateMessage
     /v1/users/{user_id}/messages/{message_id}:
         get:
             tags:
@@ -109,6 +113,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: GetUserMessage
 components:
     schemas:
         GoogleProtobufAny:
@@ -141,19 +147,11 @@ components:
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.StringValue
-                _maybe:
-                    oneOf:
-                        - required:
-                            - maybe
-                          type: object
-                          properties:
-                            maybe:
-                                type: string
-                                x-fern-encoding:
-                                    proto:
-                                        type: google.protobuf.StringValue
-                          additionalProperties: false
-                        - type: "null"
+                maybe:
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             x-fern-type-name: Message
             source: tests/pathparams/message.proto
         Status:

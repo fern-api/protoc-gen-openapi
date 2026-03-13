@@ -46,6 +46,8 @@ paths:
                                 $ref: '#/components/schemas/Status'
             security:
                 - BasicAuth: []
+            x-fern-sdk-group-name: Messaging1
+            x-fern-sdk-method-name: UpdateMessage
 components:
     schemas:
         GoogleProtobufAny:

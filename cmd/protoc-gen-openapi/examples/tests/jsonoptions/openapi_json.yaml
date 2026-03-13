@@ -47,6 +47,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: CreateMessage
         patch:
             tags:
                 - Messaging
@@ -86,6 +88,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: UpdateMessage
 components:
     schemas:
         GoogleProtobufAny:

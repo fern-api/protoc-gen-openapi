@@ -26,6 +26,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: ListMessages
     /v1/messages/{message_id}:
         get:
             tags:
@@ -231,6 +233,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: GetMessage
         post:
             tags:
                 - Messaging
@@ -263,6 +267,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: CreateMessage
         patch:
             tags:
                 - Messaging
@@ -479,6 +485,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: UpdateMessage
     /v1/messages:csv:
         get:
             tags:
@@ -498,6 +506,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: ListMessagesCSV
         post:
             tags:
                 - Messaging
@@ -519,6 +529,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Messaging
+            x-fern-sdk-method-name: CreateMessagesFromCSV
 components:
     schemas:
         FieldBehavior:

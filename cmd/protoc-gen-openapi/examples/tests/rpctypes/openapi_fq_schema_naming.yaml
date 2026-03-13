@@ -24,6 +24,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/google.rpc.Status'
+            x-fern-sdk-group-name: Status
+            x-fern-sdk-method-name: GetStatus
 components:
     schemas:
         FieldBehavior:
