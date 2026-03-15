@@ -33,6 +33,7 @@ paths:
                                 $ref: '#/components/schemas/Status'
             x-fern-sdk-group-name: OneOfService
             x-fern-sdk-method-name: CreatePayment
+            x-fern-request-name: OneOfMessage
 components:
     schemas:
         EmptyOneOf:

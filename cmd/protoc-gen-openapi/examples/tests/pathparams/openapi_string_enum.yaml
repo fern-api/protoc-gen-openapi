@@ -77,6 +77,7 @@ paths:
                                 $ref: '#/components/schemas/Status'
             x-fern-sdk-group-name: Messaging
             x-fern-sdk-method-name: CreateMessage
+            x-fern-request-name: Message
     /v1/users/{user_id}/messages/{message_id}:
         get:
             tags:

@@ -26,6 +26,7 @@ paths:
                                 $ref: '#/components/schemas/Status'
             x-fern-sdk-group-name: Status
             x-fern-sdk-method-name: GetStatus
+            x-fern-request-name: Empty
 components:
     schemas:
         GoogleProtobufAny:
