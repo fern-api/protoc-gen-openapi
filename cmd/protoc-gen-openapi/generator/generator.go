@@ -47,6 +47,7 @@ type Configuration struct {
 	DefaultResponse *bool
 	OutputMode      *string
 	SourceRoot      *string
+	FlattenOneofs   *bool
 }
 
 const (
@@ -894,10 +895,10 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		var required []string
 		
 		for _, field := range message.Fields {
-			// Skip fields that are part of an explicit oneOf.
+			// Skip fields that are part of an explicit oneOf (unless flattening is enabled).
 			// Proto3 optional fields create synthetic oneofs that should be
 			// treated as regular optional fields, not as oneOf variants.
-			if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
+			if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() && !*g.conf.FlattenOneofs {
 				continue
 			}
 			
@@ -969,8 +970,11 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 			Required:    required,
 		}
 
-		// Add oneOf fields to the schema
-		g.addOneOfFieldsToSchema(d, message.Oneofs, schema, schemaName, filename)
+		// Add oneOf fields to the schema (unless flattening is enabled,
+		// in which case they were already added as regular properties).
+		if !*g.conf.FlattenOneofs {
+			g.addOneOfFieldsToSchema(d, message.Oneofs, schema, schemaName, filename)
+		}
 
 		// Merge any `Schema` annotations with the current
 		extSchema := proto.GetExtension(message.Desc.Options(), v3.E_Schema)
