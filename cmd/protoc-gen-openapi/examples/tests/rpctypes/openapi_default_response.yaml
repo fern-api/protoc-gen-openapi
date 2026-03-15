@@ -17,13 +17,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: Status
             x-fern-sdk-method-name: GetStatus
             x-fern-request-name: Empty
@@ -40,7 +40,7 @@ components:
             x-fern-encoding:
                 proto:
                     type: google.protobuf.Any
-        Status:
+        GoogleRpcStatus:
             type: object
             properties:
                 code:

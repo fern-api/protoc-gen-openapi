@@ -28,6 +28,7 @@ import (
 const (
 	protobufValueName = "GoogleProtobufValue"
 	protobufAnyName   = "GoogleProtobufAny"
+	rpcStatusName     = "GoogleRpcStatus"
 )
 
 type OpenAPIv3Reflector struct {
@@ -65,6 +66,8 @@ func (r *OpenAPIv3Reflector) formatMessageName(message protoreflect.MessageDescr
 			name = protobufValueName
 		} else if typeName == ".google.protobuf.Any" {
 			name = protobufAnyName
+		} else if typeName == ".google.rpc.Status" {
+			name = rpcStatusName
 		}
 	}
 

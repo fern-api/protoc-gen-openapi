@@ -65,6 +65,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: ListShelves
+            x-fern-request-name: ListShelvesRequest
         post:
             tags:
                 - LibraryService
@@ -91,6 +92,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: CreateShelf
+            x-fern-request-name: CreateShelfRequest
     /v1/shelves/{shelf}:
         get:
             tags:
@@ -119,6 +121,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: GetShelf
+            x-fern-request-name: GetShelfRequest
         delete:
             tags:
                 - LibraryService
@@ -143,6 +146,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: DeleteShelf
+            x-fern-request-name: DeleteShelfRequest
     /v1/shelves/{shelf}/books:
         get:
             tags:
@@ -197,6 +201,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: ListBooks
+            x-fern-request-name: ListBooksRequest
         post:
             tags:
                 - LibraryService
@@ -230,6 +235,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: CreateBook
+            x-fern-request-name: CreateBookRequest
     /v1/shelves/{shelf}/books/{book}:
         get:
             tags:
@@ -264,6 +270,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: GetBook
+            x-fern-request-name: GetBookRequest
         put:
             tags:
                 - LibraryService
@@ -313,6 +320,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: UpdateBook
+            x-fern-request-name: UpdateBookRequest
         delete:
             tags:
                 - LibraryService
@@ -343,6 +351,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: DeleteBook
+            x-fern-request-name: DeleteBookRequest
     /v1/shelves/{shelf}/books/{book}:move:
         post:
             tags:
@@ -385,6 +394,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: MoveBook
+            x-fern-request-name: MoveBookRequest
     /v1/shelves/{shelf}:merge:
         post:
             tags:
@@ -426,6 +436,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: MergeShelves
+            x-fern-request-name: MergeShelvesRequest
 components:
     schemas:
         FieldBehavior:
