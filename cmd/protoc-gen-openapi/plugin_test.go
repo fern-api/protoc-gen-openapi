@@ -270,6 +270,46 @@ func TestOpenAPIStringEnums(t *testing.T) {
 	}
 }
 
+func TestOpenAPIFlattenOneofs(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+
+	for _, tt := range openapiTests {
+		fixture := path.Join(tt.path, "openapi_flatten_oneofs.yaml")
+		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {
+			if !GENERATE_FIXTURES {
+				continue
+			}
+		}
+		t.Run(tt.name, func(t *testing.T) {
+			err := exec.Command("protoc",
+				"-I", "../../",
+				"-I", "../../third_party",
+				"-I", "examples",
+				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
+				"--openapi_out=naming=proto,flatten_oneofs=true:.").Run()
+			if err != nil {
+				t.Fatalf("protoc failed: %+v", err)
+			}
+			if GENERATE_FIXTURES {
+				err := CopyFixture(TEMP_FILE, fixture)
+				if err != nil {
+					t.Fatalf("Can't generate fixture: %+v", err)
+				}
+			} else {
+				// Verify that the generated spec matches our expected version.
+				err = exec.Command("diff", TEMP_FILE, fixture).Run()
+				if err != nil {
+					t.Fatalf("Diff failed: %+v", err)
+				}
+			}
+			// if the test succeeded, clean up
+			os.Remove(TEMP_FILE)
+		})
+	}
+}
+
 func TestOpenAPIDefaultResponse(t *testing.T) {
 	// Set PATH to include the protoc-gen-openapi plugin
 	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
