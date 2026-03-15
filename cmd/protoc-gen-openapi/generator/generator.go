@@ -709,6 +709,17 @@ func (g *OpenAPIv3Generator) addOperationToDocumentV3(d *v3.Document, op *v3.Ope
 
 // addPathsToDocumentV3 adds paths from a specified file descriptor.
 func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, services []*protogen.Service) {
+	// First pass: count how many RPCs use each request message.
+	// When a message is shared across multiple RPCs, we rely on the schema's
+	// x-fern-type-name (via $ref) instead of setting x-fern-request-name
+	// on each operation, which would create duplicate types.
+	requestMessageUsageCount := make(map[string]int)
+	for _, service := range services {
+		for _, method := range service.Methods {
+			requestMessageUsageCount[string(method.Input.Desc.FullName())]++
+		}
+	}
+
 	for _, service := range services {
 		annotationsCount := 0
 
@@ -782,6 +793,18 @@ func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, services []*pr
 							Value: &v3.Any{Yaml: method.GoName},
 						},
 					)
+
+					// Only set x-fern-request-name when the request message is unique to
+					// this RPC. When shared across multiple RPCs, the request body's $ref
+					// to the schema (which has x-fern-type-name) is sufficient.
+					if requestMessageUsageCount[string(inputMessage.Desc.FullName())] == 1 {
+						op.SpecificationExtension = append(op.SpecificationExtension,
+							&v3.NamedAny{
+								Name:  "x-fern-request-name",
+								Value: &v3.Any{Yaml: string(inputMessage.Desc.Name())},
+							},
+						)
+					}
 
 					// Merge any `Operation` annotations with the current
 					extOperation := proto.GetExtension(method.Desc.Options(), v3.E_Operation)

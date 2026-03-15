@@ -3,28 +3,33 @@
 
 openapi: 3.0.3
 info:
-    title: Messaging API
-    description: Messaging service
-    version: 0.0.1
+    title: Title from annotation
+    description: Description from annotation
+    contact:
+        name: Contact Name
+        url: https://github.com/fern-api/protoc-gen-openapi
+        email: gnostic@google.com
+    license:
+        name: Apache License
+        url: https://github.com/fern-api/protoc-gen-openapi/blob/master/LICENSE
+    version: Version from annotation
 paths:
     /v1/messages/{message_id}:
-        post:
+        patch:
             tags:
-                - Messaging
-            operationId: Messaging_CreateMessage
+                - Messaging1
+            operationId: Messaging1_UpdateMessage
             parameters:
                 - name: message_id
                   in: path
                   required: true
                   schema:
                     type: string
-                - name: kind
-                  in: query
-                  schema:
-                    $ref: '#/components/schemas/Kind'
             requestBody:
                 content:
-                    application/json: {}
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Message'
                 required: true
             responses:
                 "200":
@@ -39,9 +44,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-            x-fern-sdk-group-name: Messaging
-            x-fern-sdk-method-name: CreateMessage
-            x-fern-request-name: Message
+            security:
+                - BasicAuth: []
+            x-fern-sdk-group-name: Messaging1
+            x-fern-sdk-method-name: UpdateMessage
 components:
     schemas:
         GoogleProtobufAny:
@@ -55,22 +61,25 @@ components:
             x-fern-encoding:
                 proto:
                     type: google.protobuf.Any
-        Kind:
-            enum:
-                - UNKNOWN_KIND
-                - KIND_1
-                - KIND_2
-            type: string
-            format: enum
-            x-fern-type-name: Kind
-            source: tests/enumoptions/message.proto
         Message:
+            title: This is an overridden message schema title
             type: object
             properties:
-                kind:
-                    $ref: '#/components/schemas/Kind'
+                id:
+                    type: integer
+                    format: int64
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.Int64Value
+                label:
+                    title: this is an overriden field schema title
+                    maxLength: 255
+                    type: string
+                    x-fern-encoding:
+                        proto:
+                            type: google.protobuf.StringValue
             x-fern-type-name: Message
-            source: tests/enumoptions/message.proto
+            source: tests/openapiv3annotations/message.proto
         Status:
             type: object
             properties:
@@ -87,5 +96,9 @@ components:
                         $ref: '#/components/schemas/GoogleProtobufAny'
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    securitySchemes:
+        BasicAuth:
+            type: http
+            scheme: basic
 tags:
-    - name: Messaging
+    - name: Messaging1

@@ -41,6 +41,7 @@ paths:
                                 $ref: '#/components/schemas/Status'
             x-fern-sdk-group-name: Messaging
             x-fern-sdk-method-name: CreateMessage
+            x-fern-request-name: Message
 components:
     schemas:
         GoogleProtobufAny:
