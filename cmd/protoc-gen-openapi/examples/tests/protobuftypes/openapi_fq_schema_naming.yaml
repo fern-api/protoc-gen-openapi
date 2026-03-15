@@ -28,6 +28,7 @@ paths:
                                 $ref: '#/components/schemas/google.rpc.Status'
             x-fern-sdk-group-name: Messaging
             x-fern-sdk-method-name: ListMessages
+            x-fern-request-name: Empty
     /v1/messages/{message_id}:
         get:
             tags:

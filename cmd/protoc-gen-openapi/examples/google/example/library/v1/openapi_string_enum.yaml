@@ -62,7 +62,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: ListShelves
             x-fern-request-name: ListShelvesRequest
@@ -89,7 +89,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: CreateShelf
             x-fern-request-name: CreateShelfRequest
@@ -118,7 +118,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: GetShelf
             x-fern-request-name: GetShelfRequest
@@ -143,7 +143,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: DeleteShelf
             x-fern-request-name: DeleteShelfRequest
@@ -198,7 +198,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: ListBooks
             x-fern-request-name: ListBooksRequest
@@ -232,7 +232,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: CreateBook
             x-fern-request-name: CreateBookRequest
@@ -267,7 +267,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: GetBook
             x-fern-request-name: GetBookRequest
@@ -317,7 +317,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: UpdateBook
             x-fern-request-name: UpdateBookRequest
@@ -348,7 +348,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: DeleteBook
             x-fern-request-name: DeleteBookRequest
@@ -391,7 +391,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: MoveBook
             x-fern-request-name: MoveBookRequest
@@ -433,7 +433,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Status'
+                                $ref: '#/components/schemas/GoogleRpcStatus'
             x-fern-sdk-group-name: LibraryService
             x-fern-sdk-method-name: MergeShelves
             x-fern-request-name: MergeShelvesRequest
@@ -515,6 +515,22 @@ components:
             x-fern-encoding:
                 proto:
                     type: google.protobuf.Any
+        GoogleRpcStatus:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
         ListBooksResponse:
             type: object
             properties:
@@ -643,21 +659,5 @@ components:
             description: A Shelf contains a collection of books with a theme.
             x-fern-type-name: Shelf
             source: google/example/library/v1/library.proto
-        Status:
-            type: object
-            properties:
-                code:
-                    type: integer
-                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
-                    format: int32
-                message:
-                    type: string
-                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
-                details:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/GoogleProtobufAny'
-                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
-            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
 tags:
     - name: LibraryService
