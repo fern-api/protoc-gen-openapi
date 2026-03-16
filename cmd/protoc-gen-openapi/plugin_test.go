@@ -44,6 +44,7 @@ var openapiTests = []struct {
 	{name: "OpenAPIv3 Annotations", path: "examples/tests/openapiv3annotations/", protofile: "message.proto"},
 	{name: "AllOf Wrap Message", path: "examples/tests/allofwrap/", protofile: "message.proto"},
 	{name: "Additional Bindings", path: "examples/tests/additional_bindings/", protofile: "message.proto"},
+	{name: "No go_package option", path: "examples/tests/nogopackage/", protofile: "message.proto"},
 }
 
 // Set this to true to generate/overwrite the fixtures. Make sure you set it back
