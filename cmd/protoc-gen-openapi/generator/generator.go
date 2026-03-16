@@ -37,17 +37,18 @@ import (
 )
 
 type Configuration struct {
-	Version         *string
-	Title           *string
-	Description     *string
-	Naming          *string
-	FQSchemaNaming  *bool
-	EnumType        *string
-	CircularDepth   *int
-	DefaultResponse *bool
-	OutputMode      *string
-	SourceRoot      *string
-	FlattenOneofs   *bool
+	Version           *string
+	Title             *string
+	Description       *string
+	Naming            *string
+	FQSchemaNaming    *bool
+	EnumType          *string
+	CircularDepth     *int
+	DefaultResponse   *bool
+	OutputMode        *string
+	SourceRoot        *string
+	FlattenOneofs     *bool
+	IncludeAllMethods *bool
 }
 
 const (
@@ -740,6 +741,54 @@ func (g *OpenAPIv3Generator) addPathsToDocumentV3(d *v3.Document, services []*pr
 				rules = append(rules, rule.AdditionalBindings...)
 			}
 
+			// When include_all_methods is enabled and there are no HTTP annotations,
+			// generate a default POST path using the fully-qualified gRPC method name.
+			if len(rules) == 0 && g.conf.IncludeAllMethods != nil && *g.conf.IncludeAllMethods {
+				annotationsCount++
+				path := "/" + string(service.Desc.FullName()) + "/" + string(method.Desc.Name())
+				methodName := "POST"
+				body := "*"
+
+				defaultHost := proto.GetExtension(service.Desc.Options(), annotations.E_DefaultHost).(string)
+
+				op, path2 := g.buildOperationV3(
+					d, operationID, service.GoName, comment, defaultHost, path, body, inputMessage, outputMessage)
+
+				extFernSummary := proto.GetExtension(method.Desc.Options(), fernoptions.E_Summary)
+				if extFernSummary != nil {
+					if summary, ok := extFernSummary.(string); ok && summary != "" {
+						op.Summary = summary
+					}
+				}
+
+				op.SpecificationExtension = append(op.SpecificationExtension,
+					&v3.NamedAny{
+						Name:  "x-fern-sdk-group-name",
+						Value: &v3.Any{Yaml: service.GoName},
+					},
+					&v3.NamedAny{
+						Name:  "x-fern-sdk-method-name",
+						Value: &v3.Any{Yaml: method.GoName},
+					},
+				)
+
+				if requestMessageUsageCount[string(inputMessage.Desc.FullName())] == 1 {
+					op.SpecificationExtension = append(op.SpecificationExtension,
+						&v3.NamedAny{
+							Name:  "x-fern-request-name",
+							Value: &v3.Any{Yaml: string(inputMessage.Desc.Name())},
+						},
+					)
+				}
+
+				extOperation := proto.GetExtension(method.Desc.Options(), v3.E_Operation)
+				if extOperation != nil {
+					proto.Merge(op, extOperation.(*v3.Operation))
+				}
+
+				g.addOperationToDocumentV3(d, op, path2, methodName)
+			}
+
 			for _, rule := range rules {
 				var path string
 				var methodName string
@@ -916,7 +965,7 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		}
 
 		var required []string
-		
+
 		for _, field := range message.Fields {
 			// Skip fields that are part of an explicit oneOf (unless flattening is enabled).
 			// Proto3 optional fields create synthetic oneofs that should be
@@ -924,7 +973,7 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 			if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() && !*g.conf.FlattenOneofs {
 				continue
 			}
-			
+
 			// Get the field description from the comments.
 			description := g.filterCommentString(field.Comments.Leading)
 			// Check the field annotations to see if this is a readonly or writeonly field.
@@ -1055,7 +1104,6 @@ func (g *OpenAPIv3Generator) createEnumSchema(enumName string, enumValues protor
 	}
 }
 
-
 // addOneOfFieldsToSchema adds oneOf fields to the schema
 func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*protogen.Oneof, schema *v3.Schema, schemaName string, filename string) {
 	if oneofs == nil {
@@ -1079,17 +1127,17 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 	if len(schema.Properties.AdditionalProperties) == 0 {
 		// Flatten all oneofs to the message level
 		allOneOfSchemas := make([]*v3.SchemaOrReference, 0)
-		
+
 		for _, oneOfProto := range oneofs {
 			oneOfSchemas := make([]*v3.SchemaOrReference, 0, len(oneOfProto.Fields))
-			
+
 			for _, fieldProto := range oneOfProto.Fields {
 				fieldName := g.reflect.formatFieldName(fieldProto.Desc)
-				
+
 				// For google.protobuf.Empty, create a simple object schema
-				if fieldProto.Desc.Kind() == protoreflect.MessageKind && 
-				   g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
-					
+				if fieldProto.Desc.Kind() == protoreflect.MessageKind &&
+					g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
+
 					emptySchema := &v3.SchemaOrReference{
 						Oneof: &v3.SchemaOrReference_Schema{
 							Schema: &v3.Schema{
@@ -1113,11 +1161,11 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 						},
 					}
 					oneOfSchemas = append(oneOfSchemas, emptySchema)
-					
+
 				} else {
 					// For other field types, wrap the field schema in an object with the specific property name
 					fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
-					
+
 					objectSchema := &v3.SchemaOrReference{
 						Oneof: &v3.SchemaOrReference_Schema{
 							Schema: &v3.Schema{
@@ -1142,11 +1190,11 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 					oneOfSchemas = append(oneOfSchemas, objectSchema)
 				}
 			}
-			
+
 			// Add all schemas from this oneof to the combined list
 			allOneOfSchemas = append(allOneOfSchemas, oneOfSchemas...)
 		}
-		
+
 		// Add null as an option
 		nullSchema := &v3.SchemaOrReference{
 			Oneof: &v3.SchemaOrReference_Schema{
@@ -1156,12 +1204,12 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 			},
 		}
 		allOneOfSchemas = append(allOneOfSchemas, nullSchema)
-		
+
 		// Replace the schema with the oneOf at the top level
 		schema.OneOf = allOneOfSchemas
 		schema.Type = ""
 		schema.Properties = nil
-		
+
 		return
 	}
 
@@ -1169,14 +1217,14 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 	for _, oneOfProto := range oneofs {
 		oneOfFieldName := string(oneOfProto.Desc.Name())
 		oneOfSchemas := make([]*v3.SchemaOrReference, 0, len(oneOfProto.Fields))
-		
+
 		for _, fieldProto := range oneOfProto.Fields {
 			fieldName := g.reflect.formatFieldName(fieldProto.Desc)
-			
+
 			// For google.protobuf.Empty, create a simple object schema
-			if fieldProto.Desc.Kind() == protoreflect.MessageKind && 
-			   g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
-				
+			if fieldProto.Desc.Kind() == protoreflect.MessageKind &&
+				g.reflect.fullMessageTypeName(fieldProto.Desc.Message()) == ".google.protobuf.Empty" {
+
 				emptySchema := &v3.SchemaOrReference{
 					Oneof: &v3.SchemaOrReference_Schema{
 						Schema: &v3.Schema{
@@ -1185,11 +1233,11 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 					},
 				}
 				oneOfSchemas = append(oneOfSchemas, emptySchema)
-				
+
 			} else {
 				// For other field types, wrap the field schema in an object with the specific property name
 				fieldSchema := g.reflect.schemaOrReferenceForField(fieldProto.Desc)
-				
+
 				objectSchema := &v3.SchemaOrReference{
 					Oneof: &v3.SchemaOrReference_Schema{
 						Schema: &v3.Schema{
@@ -1214,7 +1262,7 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 				oneOfSchemas = append(oneOfSchemas, objectSchema)
 			}
 		}
-		
+
 		// Add null as an option
 		nullSchema := &v3.SchemaOrReference{
 			Oneof: &v3.SchemaOrReference_Schema{
@@ -1224,7 +1272,7 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 			},
 		}
 		oneOfSchemas = append(oneOfSchemas, nullSchema)
-		
+
 		// Create the oneOf schema
 		oneOfSchema := &v3.SchemaOrReference{
 			Oneof: &v3.SchemaOrReference_Schema{
@@ -1233,7 +1281,7 @@ func (g *OpenAPIv3Generator) addOneOfFieldsToSchema(d *v3.Document, oneofs []*pr
 				},
 			},
 		}
-		
+
 		schema.Properties.AdditionalProperties = append(
 			schema.Properties.AdditionalProperties,
 			&v3.NamedSchemaOrReference{
