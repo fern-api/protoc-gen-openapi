@@ -57,6 +57,10 @@ func (r *OpenAPIv3Reflector) getMessageName(message protoreflect.MessageDescript
 	return prefix + string(message.Name())
 }
 
+func (r *OpenAPIv3Reflector) getEnumName(enum protoreflect.EnumDescriptor) string {
+	return wk.GetEnumName(enum)
+}
+
 func (r *OpenAPIv3Reflector) formatMessageName(message protoreflect.MessageDescriptor) string {
 	typeName := r.fullMessageTypeName(message)
 

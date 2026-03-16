@@ -65,7 +65,7 @@ func NewBytesSchema() *v3.SchemaOrReference {
 		Oneof: &v3.SchemaOrReference_Schema{
 			Schema: &v3.Schema{
 				Type:   "string",
-				Format: "bytes",
+				Format: "byte",
 				SpecificationExtension: []*v3.NamedAny{
 					{
 						Name: "x-fern-encoding",
@@ -127,10 +127,22 @@ func NewEnumSchema(enum_type *string, field protoreflect.FieldDescriptor) *v3.Sc
 	return &v3.SchemaOrReference{
 		Oneof: &v3.SchemaOrReference_Reference{
 			Reference: &v3.Reference{
-				XRef: "#/components/schemas/" + string(field.Enum().Name()),
+				XRef: "#/components/schemas/" + GetEnumName(field.Enum()),
 			},
 		},
 	}
+}
+
+// GetEnumName returns the schema name for an enum, including the parent
+// message name prefix for nested enums. For example, a nested enum
+// `message InvoiceBundle { enum Status { ... } }` returns "InvoiceBundle_Status".
+func GetEnumName(enum protoreflect.EnumDescriptor) string {
+	prefix := ""
+	parent := enum.Parent()
+	if _, ok := parent.(protoreflect.MessageDescriptor); ok {
+		prefix = string(parent.Name()) + "_"
+	}
+	return prefix + string(enum.Name())
 }
 
 func NewListSchema(item_schema *v3.SchemaOrReference) *v3.SchemaOrReference {

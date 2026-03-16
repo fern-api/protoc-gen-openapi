@@ -856,7 +856,7 @@ func (g *OpenAPIv3Generator) addWellKnownTypeSchemaToDocumentV3(d *v3.Document, 
 // addSchemaForEnumsToDocumentV3 adds enum schemas to the document
 func (g *OpenAPIv3Generator) addSchemaForEnumsToDocumentV3(d *v3.Document, enums []*protogen.Enum, filename string) {
 	for _, enum := range enums {
-		enumName := string(enum.Desc.Name())
+		enumName := g.reflect.getEnumName(enum.Desc)
 		enumSchema := g.createEnumSchema(enumName, enum.Desc.Values())
 		g.addSchemaToDocumentV3(d, &v3.NamedSchemaOrReference{
 			Name:  enumName,
@@ -883,7 +883,7 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		// Skip map entries and enums since they are handled separately
 		if len(message.Enums) > 0 {
 			for _, enum := range message.Enums {
-				enumName := string(enum.Desc.Name())
+				enumName := g.reflect.getEnumName(enum.Desc)
 				enumSchema := g.createEnumSchema(enumName, enum.Desc.Values())
 				g.addSchemaToDocumentV3(d, &v3.NamedSchemaOrReference{
 					Name:  enumName,

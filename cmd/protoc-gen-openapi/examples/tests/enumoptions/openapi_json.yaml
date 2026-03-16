@@ -22,6 +22,10 @@ paths:
                   in: query
                   schema:
                     $ref: '#/components/schemas/Kind'
+                - name: priority
+                  in: query
+                  schema:
+                    $ref: '#/components/schemas/Message_Priority'
             requestBody:
                 content:
                     application/json: {}
@@ -85,7 +89,19 @@ components:
             properties:
                 kind:
                     $ref: '#/components/schemas/Kind'
+                priority:
+                    $ref: '#/components/schemas/Message_Priority'
             x-fern-type-name: Message
+            source: tests/enumoptions/message.proto
+        Message_Priority:
+            enum:
+                - PRIORITY_UNSPECIFIED
+                - LOW
+                - MEDIUM
+                - HIGH
+            type: string
+            format: enum
+            x-fern-type-name: Message_Priority
             source: tests/enumoptions/message.proto
 tags:
     - name: Messaging
