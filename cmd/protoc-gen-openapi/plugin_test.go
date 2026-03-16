@@ -311,6 +311,44 @@ func TestOpenAPIFlattenOneofs(t *testing.T) {
 	}
 }
 
+func TestOpenAPIIncludeAllMethods(t *testing.T) {
+	// Set PATH to include the protoc-gen-openapi plugin
+	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
+
+	for _, tt := range openapiTests {
+		fixture := path.Join(tt.path, "openapi_include_all_methods.yaml")
+		if _, err := os.Stat(fixture); errors.Is(err, os.ErrNotExist) {
+			if !GENERATE_FIXTURES {
+				continue
+			}
+		}
+		t.Run(tt.name, func(t *testing.T) {
+			err := exec.Command("protoc",
+				"-I", "../../",
+				"-I", "../../third_party",
+				"-I", "examples",
+				path.Join(tt.path, tt.protofile),
+				"--plugin=protoc-gen-openapi=./protoc-gen-openapi",
+				"--openapi_out=naming=proto,include_all_methods=true:.").Run()
+			if err != nil {
+				t.Fatalf("protoc failed: %+v", err)
+			}
+			if GENERATE_FIXTURES {
+				err := CopyFixture(TEMP_FILE, fixture)
+				if err != nil {
+					t.Fatalf("Can't generate fixture: %+v", err)
+				}
+			} else {
+				err = exec.Command("diff", TEMP_FILE, fixture).Run()
+				if err != nil {
+					t.Fatalf("Diff failed: %+v", err)
+				}
+			}
+			os.Remove(TEMP_FILE)
+		})
+	}
+}
+
 func TestOpenAPIDefaultResponse(t *testing.T) {
 	// Set PATH to include the protoc-gen-openapi plugin
 	os.Setenv("PATH", "../../:"+os.Getenv("PATH"))
