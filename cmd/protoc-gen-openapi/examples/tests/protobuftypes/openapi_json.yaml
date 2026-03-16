@@ -145,7 +145,7 @@ paths:
                   in: query
                   schema:
                     type: string
-                    format: bytes
+                    format: byte
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.BytesValue
@@ -385,7 +385,7 @@ paths:
                   in: query
                   schema:
                     type: string
-                    format: bytes
+                    format: byte
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.BytesValue
@@ -635,7 +635,7 @@ components:
                             type: google.protobuf.BoolValue
                 bytes_value_type:
                     type: string
-                    format: bytes
+                    format: byte
                     x-fern-encoding:
                         proto:
                             type: google.protobuf.BytesValue
