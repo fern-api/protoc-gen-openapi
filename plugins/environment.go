@@ -49,7 +49,7 @@ func NewEnvironment() (env *Environment, err error) {
 	if (*input == "") && !*plugin {
 		flag.Usage = func() {
 			fmt.Fprintf(os.Stderr, "\n")
-			fmt.Fprintf(os.Stderr, programName+" is a gnostic plugin.\n")
+			fmt.Fprintf(os.Stderr, "%s is a gnostic plugin.\n", programName)
 			fmt.Fprintf(os.Stderr, `
 When it is run from gnostic, the -plugin option is specified and gnostic
 writes a binary request to stdin and waits for a binary response on stdout.
